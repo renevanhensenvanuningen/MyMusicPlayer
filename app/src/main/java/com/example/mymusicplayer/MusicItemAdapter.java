@@ -73,15 +73,15 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
         Uri playUri = Uri.parse(musicItems.get(position).getPath());
         player = MediaPlayer.create(mContext, playUri );
         player.start();
-        try
-        {
+ /*      try
+       {
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setDataSource(mContext, playUri);
             player.prepare();
-            player.start();
+           player.start();
         }
         catch (IOException ex){}
-
+*/
     }
 
     private void StopPlay()
