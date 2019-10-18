@@ -84,20 +84,8 @@ public class MainActivity extends AppCompatActivity {
                 Uri playUri = Uri.parse(playUriStr);
                 Integer count2 = adapter.getCount() -1 - count ;
                // adapter.insert("Internal count "+ count2.toString(), 0);
-
-
                 listView.setAdapter(adapter);
-                try
-                {
-                    MediaPlayer player = MediaPlayer.create(context, playUri );
-                    player.start();
-                    MediaPlayer mPlayer = new MediaPlayer();
-                    mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    mPlayer.setDataSource(getApplicationContext(), playUri);
-                    mPlayer.prepare();
-                    mPlayer.start();
-                }
-                catch (IOException ex){}
+
 
             }
         });
