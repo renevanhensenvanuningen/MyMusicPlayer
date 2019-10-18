@@ -27,10 +27,16 @@
             android:text="Path" />
 
         <Button
-            android:id="@+id/btn"
-            android:layout_width="match_parent"
+            android:id="@+id/btnStart"
+            android:layout_width="103dp"
             android:layout_height="wrap_content"
             android:text="@android:string/VideoView_error_button"
-            tools:text="P" />
+            tools:text="Start" />
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:text="Stop" />
     </LinearLayout>
 </RelativeLayout>

@@ -1,6 +1,5 @@
 package com.example.mymusicplayer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
 public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
@@ -25,6 +23,8 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
     private Context mContext;
 
     private int pos ;
+
+    private MediaPlayer player;
 
     private List<MusicItem> musicItems = new ArrayList();
 
@@ -49,46 +49,45 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
         TextView pathTextView = (TextView) listItemview.findViewById(R.id.edtPath);
         titleTextView.setText(currentMusicItem.getTitle());
 
-        Button b = (Button) listItemview.findViewById(R.id.btn);
-        b.setOnClickListener(new View.OnClickListener() {
+        Button btnStart = (Button) listItemview.findViewById(R.id.btnStart);
+        btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PlayFile(position);
             }
         });
 
-        titleTextView.setOnClickListener(new View.OnClickListener() {
+        Button btnStop = (Button) listItemview.findViewById(R.id.btnStop);
+        btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"Jij kan goed klikken op een text ding", Toast.LENGTH_LONG);
+                StopPlay();
             }
         });
 
-        listItemview.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-               PlayFile(position);
-            }
-        });
         return listItemview;
     }
 
     private void PlayFile(int position)
     {
         Uri playUri = Uri.parse(musicItems.get(position).getPath());
-        MediaPlayer player = MediaPlayer.create(mContext, playUri );
+        player = MediaPlayer.create(mContext, playUri );
         player.start();
-        MediaPlayer mPlayer = new MediaPlayer();
         try
         {
-            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mPlayer.setDataSource(mContext, playUri);
-            mPlayer.prepare();
-            mPlayer.start();
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            player.setDataSource(mContext, playUri);
+            player.prepare();
+            player.start();
         }
         catch (IOException ex){}
 
+    }
+
+    private void StopPlay()
+    {
+        if (player.isPlaying())
+        player.stop();
     }
 
 
