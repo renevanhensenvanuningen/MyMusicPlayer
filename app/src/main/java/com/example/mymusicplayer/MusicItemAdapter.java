@@ -1,6 +1,7 @@
 package com.example.mymusicplayer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -24,7 +25,7 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
 
     private int pos ;
 
-    private MediaPlayer player;
+    private MediaPlayer player = new MediaPlayer();
 
     private List<MusicItem> musicItems = new ArrayList();
 
@@ -65,29 +66,39 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
             }
         });
 
+        Button btnStartIntent = (Button) listItemview.findViewById(R.id.btnStartintent);
+        btnStartIntent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartIntent();
+            }
+        });
+
+
         return listItemview;
     }
 
     private void PlayFile(int position)
     {
         Uri playUri = Uri.parse(musicItems.get(position).getPath());
+        if (player.isPlaying()) player.stop();
         player = MediaPlayer.create(mContext, playUri );
         player.start();
- /*      try
-       {
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(mContext, playUri);
-            player.prepare();
-           player.start();
-        }
-        catch (IOException ex){}
-*/
+
     }
 
     private void StopPlay()
     {
         if (player.isPlaying())
         player.stop();
+    }
+
+    private void StartIntent()
+    {
+        Intent myIntent = new Intent(this.getContext(), PlayOneActivity.class);
+        myIntent.putExtra("title", "Hoi"); //Optional parameters
+        myIntent.putExtra("musicItem", musicItems.get(pos));
+        mContext.startActivity(myIntent);
     }
 
 

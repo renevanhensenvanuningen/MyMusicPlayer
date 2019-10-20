@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -90,6 +91,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btnIntent = (Button)findViewById(R.id.btnStartintent);
+
+        btnIntent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                GetAllMediaMp3Files(uri);
+                Integer count = adapter.getCount();
+
+                //adapter.insert("Sdcard count "+ count.toString(), 0);
+
+                uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
+                String playUriStr = GetAllMediaMp3Files(uri);
+                Uri playUri = Uri.parse(playUriStr);
+                Integer count2 = adapter.getCount() -1 - count ;
+                // adapter.insert("Internal count "+ count2.toString(), 0);
+                listView.setAdapter(adapter);
+
+
+            }
+        });
+
         // ListView on item selected listener.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -113,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 MediaStore.Audio.Media.ARTIST,
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.COMPOSER,
                 MediaStore.Audio.Media.DATA,    // filepath of the audio file
                 MediaStore.Audio.Media._ID,     // context id/ uri id of the file
         };
@@ -138,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
             int Title = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int filePathIdx = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+            int composerIdx = cursor.getColumnIndex(MediaStore.Audio.Media.COMPOSER);
             //cursor.
             //Getting Song ID From Cursor.
             //int id = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
@@ -149,7 +175,12 @@ public class MainActivity extends AppCompatActivity {
                 filePath = cursor.getString(filePathIdx);
                 String SongTitle = cursor.getString(Title);
                 // Adding Media File Names to ListElementsArrayList.
-                ListElementsArrayList.add(new MusicItem(SongTitle, filePath));
+                HashMap<String, String> hm = new HashMap<String, String>();
+                hm.put("path", cursor.getString(filePathIdx));
+                hm.put("title", cursor.getString(Title));
+                hm.put("composer", cursor.getString(composerIdx));
+
+                ListElementsArrayList.add(new MusicItem(hm));
 
             } while (cursor.moveToNext());
         }
