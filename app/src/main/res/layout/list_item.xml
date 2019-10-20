@@ -16,7 +16,10 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Title" />
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:text="Title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <EditText
             android:id="@+id/edtPath"
@@ -24,19 +27,36 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Path" />
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:text="Path"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-        <Button
-            android:id="@+id/btnStart"
-            android:layout_width="103dp"
-            android:layout_height="wrap_content"
-            android:text="@android:string/VideoView_error_button"
-            tools:text="Start" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnStop"
-            android:layout_width="103dp"
-            android:layout_height="wrap_content"
-            android:text="Stop" />
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="103dp"
+                android:layout_height="wrap_content"
+                android:text="@android:string/VideoView_error_button"
+                tools:text="Start" />
+
+            <Button
+                android:id="@+id/btnStop"
+                android:layout_width="103dp"
+                android:layout_height="wrap_content"
+                android:text="Stop" />
+
+            <Button
+                android:id="@+id/btnStartintent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Button" />
+        </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>
