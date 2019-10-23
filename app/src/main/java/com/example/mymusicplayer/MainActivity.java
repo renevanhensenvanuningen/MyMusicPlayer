@@ -8,6 +8,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.AudioManager;
@@ -91,26 +92,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btnIntent = (Button)findViewById(R.id.btnStartintent);
+        Button btnIntent = (Button)findViewById(R.id.btnStartIntent);
 
         btnIntent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                GetAllMediaMp3Files(uri);
-                Integer count = adapter.getCount();
-
-                //adapter.insert("Sdcard count "+ count.toString(), 0);
-
-                uri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
-                String playUriStr = GetAllMediaMp3Files(uri);
-                Uri playUri = Uri.parse(playUriStr);
-                Integer count2 = adapter.getCount() -1 - count ;
-                // adapter.insert("Internal count "+ count2.toString(), 0);
-                listView.setAdapter(adapter);
-
-
+                StartNewIntent();
             }
         });
 
@@ -126,6 +113,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private  void StartNewIntent()
+    {
+        Intent myIntent = new Intent(this, MainActivity2.class);
+        myIntent.putExtra("title", "Hoi"); //Optional parameters
+        this.startActivity(myIntent);
     }
 
     public String GetAllMediaMp3Files(Uri uri){

@@ -2,6 +2,7 @@ package com.example.mymusicplayer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -25,15 +26,27 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
 
     private int pos ;
 
+    private View lastSelectedItem;
+
     private MediaPlayer player = new MediaPlayer();
 
     private List<MusicItem> musicItems = new ArrayList();
-
+    private ViewGroup viewGroup;
 
     public MusicItemAdapter(@NonNull Context context,  ArrayList<MusicItem> musicItemsList) {
         super(context, 0 , musicItemsList);
         mContext = context;
         musicItems = musicItemsList;
+    }
+
+
+    private void toggleBackgroundItem(View view) {
+        if (lastSelectedItem != null) {
+            lastSelectedItem.setBackgroundColor(Color.TRANSPARENT);
+        }
+        view.setBackgroundColor(Color.BLUE);
+        lastSelectedItem = view;
+
     }
 
     @Override
@@ -50,44 +63,43 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
         TextView pathTextView = (TextView) listItemview.findViewById(R.id.edtPath);
         titleTextView.setText(currentMusicItem.getTitle());
 
-        Button btnStart = (Button) listItemview.findViewById(R.id.btnStart);
-        btnStart.setOnClickListener(new View.OnClickListener() {
+        TextView tvAlbumComposer = (TextView) listItemview.findViewById(R.id.edtComposerArtist);
+        tvAlbumComposer.setText(currentMusicItem.getArtistAndComposer());
+
+
+        viewGroup = parent;
+
+        titleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayFile(position);
+                PlayFileAndSetSelected(position, v);
             }
         });
-
-        Button btnStop = (Button) listItemview.findViewById(R.id.btnStop);
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StopPlay();
-            }
-        });
-
-        Button btnStartIntent = (Button) listItemview.findViewById(R.id.btnStartintent);
-        btnStartIntent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StartIntent();
-            }
-        });
-
 
         return listItemview;
     }
 
-    private void PlayFile(int position)
+    public void PausePlay()
+    {
+        if (player.isPlaying())
+        player.pause();
+
+    }
+    public void PlayFile(int position)
     {
         Uri playUri = Uri.parse(musicItems.get(position).getPath());
         if (player.isPlaying()) player.stop();
         player = MediaPlayer.create(mContext, playUri );
         player.start();
-
     }
 
-    private void StopPlay()
+    private  void PlayFileAndSetSelected(int position, View view){
+        toggleBackgroundItem(view);
+        PlayFile(position);
+    }
+
+
+    public void StopPlay()
     {
         if (player.isPlaying())
         player.stop();

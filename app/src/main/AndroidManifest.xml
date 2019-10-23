@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:label="MyMusicPlayer" android:name=".PlayOneActivity"/>
+        <activity android:label="MyMusicPlayer" android:name=".MainActivity2"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
