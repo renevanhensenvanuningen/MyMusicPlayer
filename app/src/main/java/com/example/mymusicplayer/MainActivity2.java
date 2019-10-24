@@ -11,11 +11,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -36,8 +39,8 @@ public class MainActivity2 extends Activity {
 
     ArrayList<MusicItem> ListElementsArrayList ;
 
-    ArrayAdapter<MusicItem> adapter ;
-
+    ArrayAdapter<MusicItem> oldadapter ;
+    MyFilterAdapter adapter;
     ContentResolver contentResolver;
 
     Cursor cursor;
@@ -73,7 +76,8 @@ public class MainActivity2 extends Activity {
 
         context = getApplicationContext();
         ListElementsArrayList = new ArrayList<MusicItem>();
-        adapter = new MusicItemAdapter(this, ListElementsArrayList );
+        oldadapter = new MusicItemAdapter(this, ListElementsArrayList );
+        adapter = new MyFilterAdapter(this, ListElementsArrayList);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -93,23 +97,41 @@ public class MainActivity2 extends Activity {
                 ListMusicFiles();
             }
         });
+
+        TextView etSearch = (TextView) findViewById(R.id.etSearch);
+        etSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Call back the Adapter with current character to Filter
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     public void PlayFile(int position){
 
-        MusicItemAdapter ad = (MusicItemAdapter) adapter;
+        MyFilterAdapter ad = (MyFilterAdapter) adapter;
         ad.PlayFile(position);
     }
 
     private  void PausePlay()
     {
-      MusicItemAdapter ad = (MusicItemAdapter) adapter;
-      ad.PausePlay();
+        MyFilterAdapter ad = (MyFilterAdapter) adapter;
+        ad.PausePlay();
     }
 
     private  void StopPlay()
     {
-        MusicItemAdapter ad = (MusicItemAdapter) adapter;
+        MyFilterAdapter ad = (MyFilterAdapter) adapter;
         ad.StopPlay();
     }
 
