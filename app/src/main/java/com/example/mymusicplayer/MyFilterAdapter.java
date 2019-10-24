@@ -27,12 +27,20 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
     private ViewGroup viewGroup;
     MediaPlayer player = new MediaPlayer();
     private View lastSelectedItem;
+    private int playPosition;
 
     public MyFilterAdapter(Context context, ArrayList<MusicItem> mProductArrayList) {
         this.mOriginalValues = mProductArrayList;
         this.mDisplayedValues = mProductArrayList;
         inflater = LayoutInflater.from(context);
         this.context = context;
+
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                doOnComplete();
+            }
+        });
     }
 
     @Override
@@ -53,6 +61,14 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
     private class ViewHolder {
         LinearLayout llContainer;
         TextView tvName,tvPrice;
+    }
+
+    private void doOnComplete(){
+        if (playPosition <= mDisplayedValues.size() -1)
+        {
+           PlayFile(playPosition +1);
+        }
+        else PlayFile(0);
     }
 
     @Override
@@ -88,9 +104,16 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
 
     public void PlayFile(int position)
     {
+        playPosition = position;
         Uri playUri = Uri.parse(mDisplayedValues.get(position).getPath());
         if (player.isPlaying()) player.stop();
         player = MediaPlayer.create(context, playUri );
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                doOnComplete();
+            }
+        });
         player.start();
     }
 
