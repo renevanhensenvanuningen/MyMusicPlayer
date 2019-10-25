@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
 
@@ -32,11 +34,13 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
 
     private List<MusicItem> musicItems = new ArrayList();
     private ViewGroup viewGroup;
+    private SeekBar seekbar;
 
-    public MusicItemAdapter(@NonNull Context context,  ArrayList<MusicItem> musicItemsList) {
+    public MusicItemAdapter(@NonNull Context context,  ArrayList<MusicItem> musicItemsList, SeekBar seekbar) {
         super(context, 0 , musicItemsList);
         mContext = context;
         musicItems = musicItemsList;
+        this.seekbar = seekbar;
     }
 
 
@@ -90,7 +94,11 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
         Uri playUri = Uri.parse(musicItems.get(position).getPath());
         if (player.isPlaying()) player.stop();
         player = MediaPlayer.create(mContext, playUri );
+
+        MediaObserver observer = new MediaObserver();
+
         player.start();
+        new Thread(observer).start();
     }
 
     private  void PlayFileAndSetSelected(int position, View view){
@@ -117,6 +125,27 @@ public class MusicItemAdapter extends ArrayAdapter<MusicItem>  {
     @Override
     public boolean hasStableIds() {
         return true;
+    }
+
+    private class MediaObserver implements Runnable {
+        private AtomicBoolean stop = new AtomicBoolean(false);
+
+        public void stop() {
+            stop.set(true);
+        }
+
+        @Override
+        public void run() {
+            while (!stop.get()) {
+                seekbar.setProgress((int)((double) player.getCurrentPosition() / (double)player.getDuration()*100));
+                try {
+                    Thread.sleep(200);
+                } catch (Exception ex) {
+
+                }
+
+            }
+        }
     }
 
 
