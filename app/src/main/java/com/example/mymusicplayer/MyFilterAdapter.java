@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 // Adapter Class
 public class MyFilterAdapter extends BaseAdapter implements Filterable {
@@ -69,6 +71,11 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
            PlayFile(playPosition +1);
         }
         else PlayFile(0);
+    }
+
+
+    public MediaPlayer getPlayer(){
+        return player;
     }
 
     @Override
@@ -182,8 +189,11 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
                 } else {
                     constraint = constraint.toString().toLowerCase();
                     for (int i = 0; i < mOriginalValues.size(); i++) {
-                        String data = mOriginalValues.get(i).getTitle();
-                        if (data.toLowerCase().startsWith(constraint.toString())) {
+                        String data = mOriginalValues.get(i).getTitle() + " "  + mOriginalValues.get(i).getArtistAndComposer() + mOriginalValues.get(i).getAlbum() + " " + mOriginalValues.get(i).getPath();
+                        if (
+                                data.toLowerCase().contains(constraint.toString()) || false
+                        )
+                        {
                             HashMap<String, String> hm = new HashMap<String, String>();
                             hm.put("path", mOriginalValues.get(i).getPath());
                             hm.put("title", mOriginalValues.get(i).getTitle());
@@ -202,6 +212,9 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
         };
         return filter;
     }
+
+
+
 }
 
 
