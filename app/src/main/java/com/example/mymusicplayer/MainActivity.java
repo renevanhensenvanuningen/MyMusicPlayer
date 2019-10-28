@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -62,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
         context = getApplicationContext();
         ListElementsArrayList = new ArrayList<MusicItem>();
-        adapter = new MusicItemAdapter(this, ListElementsArrayList );
+
+        SeekBar seekbar  = (SeekBar) findViewById(R.id.seekbar_audio);
+        adapter = new MusicItemAdapter(this, ListElementsArrayList, seekbar );
 
 
 

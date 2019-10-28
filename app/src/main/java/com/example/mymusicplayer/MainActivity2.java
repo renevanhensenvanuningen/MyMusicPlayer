@@ -81,7 +81,7 @@ public class MainActivity2 extends Activity {
 
         context = getApplicationContext();
         ListElementsArrayList = new ArrayList<MusicItem>();
-        oldadapter = new MusicItemAdapter(this, ListElementsArrayList );
+        oldadapter = new MusicItemAdapter(this, ListElementsArrayList , seekbar);
         adapter = new MyFilterAdapter(this, ListElementsArrayList);
 
         seekbar = (SeekBar) findViewById(R.id.seekbar_audio);
@@ -126,8 +126,10 @@ public class MainActivity2 extends Activity {
 
     public void PlayFile(int position){
 
+
         MyFilterAdapter ad = (MyFilterAdapter) adapter;
         ad.PlayFile(position);
+
     }
 
     public MediaPlayer getPlayer(){
@@ -273,31 +275,6 @@ public class MainActivity2 extends Activity {
         }
     }
 
-    private class MediaObserver implements Runnable {
-        private AtomicBoolean stop = new AtomicBoolean(false);
 
-        public void stop() {
-            stop.set(true);
-        }
-
-        @Override
-        public void run() {
-            while (!stop.get()) {
-                seekbar.setProgress((int)((double) getPlayer().getCurrentPosition() / (double)getPlayer().getDuration()*100));
-                try {
-                    Thread.sleep(200);
-                } catch (Exception ex) {
-
-                }
-
-            }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getPlayer().stop();
-    }
 }
 
