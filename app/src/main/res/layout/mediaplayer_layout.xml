@@ -30,47 +30,52 @@
     <LinearLayout
         android:id="@+id/button_group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_height="100px"
+        android:layout_marginBottom="0dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
-
         <Button
-            android:id="@+id/button_list"
+            android:id="@+id/button_previous"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-
-            android:gravity="left|center_vertical"
-            android:text="List" />
-
-
+            android:drawableLeft="@android:drawable/ic_media_previous"
+            android:gravity="left|center_vertical" />
         <Button
             android:id="@+id/button_play"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-
-            android:gravity="left|center_vertical"
-            android:text="Play" />
+            android:drawableLeft="@android:drawable/ic_media_play"
+            android:gravity="left|center_vertical" />
 
         <Button
             android:id="@+id/button_pause"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-
+            android:drawableLeft="@android:drawable/ic_media_pause"
             android:gravity="left|center_vertical"
-            android:text="Pause" />
+             />
+        <Button
+            android:id="@+id/button_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_media_pause"
+            android:gravity="left|center_vertical"
+            />
+
 
         <Button
             android:id="@+id/button_reset"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_media_next"
 
             android:gravity="left|center_vertical"
-            android:text="Reset" />
+             />
 
     </LinearLayout>
     <TextView

@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,13 +31,14 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
     MediaPlayer player = new MediaPlayer();
     private View lastSelectedItem;
     private int playPosition;
+    private SeekBar seekbar;
 
-    public MyFilterAdapter(Context context, ArrayList<MusicItem> mProductArrayList) {
+    public MyFilterAdapter(Context context, ArrayList<MusicItem> mProductArrayList, SeekBar seekbar) {
         this.mOriginalValues = mProductArrayList;
         this.mDisplayedValues = mProductArrayList;
         inflater = LayoutInflater.from(context);
         this.context = context;
-
+        this.seekbar = seekbar;
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -68,9 +70,9 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
     private void doOnComplete(){
         if (playPosition <= mDisplayedValues.size() -1)
         {
-           PlayFile(playPosition +1);
+           PlayFileAndSetSelected(playPosition +1, lastSelectedItem);
         }
-        else PlayFile(0);
+        else PlayFileAndSetSelected(0, lastSelectedItem);
     }
 
 
@@ -121,7 +123,12 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
                 doOnComplete();
             }
         });
+
+        MediaObserver observer = new MediaObserver();
+
         player.start();
+        new Thread(observer).start();
+
     }
 
     public void PausePlay()
@@ -211,6 +218,27 @@ public class MyFilterAdapter extends BaseAdapter implements Filterable {
             }
         };
         return filter;
+    }
+
+    private class MediaObserver implements Runnable {
+        private AtomicBoolean stop = new AtomicBoolean(false);
+
+        public void stop() {
+            stop.set(true);
+        }
+
+        @Override
+        public void run() {
+            while (!stop.get()) {
+                seekbar.setProgress((int)((double) player.getCurrentPosition() / (double)player.getDuration()*100));
+                try {
+                    Thread.sleep(200);
+                } catch (Exception ex) {
+
+                }
+
+            }
+        }
     }
 
 

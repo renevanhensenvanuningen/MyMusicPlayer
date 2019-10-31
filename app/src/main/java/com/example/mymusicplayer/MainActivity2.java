@@ -57,11 +57,10 @@ public class MainActivity2 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mediaplayer_layout);
-        Button b = (Button) findViewById(R.id.button_list);
 
         listView = (ListView) findViewById(R.id.lvMuisicPlayer);
 
-        button = (Button)findViewById(R.id.button_list);
+
 
         Button btnPause = (Button) findViewById(R.id.button_pause);
         btnPause.setOnClickListener(new View.OnClickListener() {
@@ -81,10 +80,14 @@ public class MainActivity2 extends Activity {
 
         context = getApplicationContext();
         ListElementsArrayList = new ArrayList<MusicItem>();
-        oldadapter = new MusicItemAdapter(this, ListElementsArrayList , seekbar);
-        adapter = new MyFilterAdapter(this, ListElementsArrayList);
-
+        //oldadapter = new MusicItemAdapter(this, ListElementsArrayList , seekbar);
         seekbar = (SeekBar) findViewById(R.id.seekbar_audio);
+        adapter = new MyFilterAdapter(this, ListElementsArrayList, seekbar);
+
+        ListMusicFiles();
+
+
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,12 +101,7 @@ public class MainActivity2 extends Activity {
         // Requesting run time permission for Read External Storage.
         AndroidRuntimePermission();
 
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ListMusicFiles();
-            }
-        });
+
 
         TextView etSearch = (TextView) findViewById(R.id.etSearch);
         etSearch.addTextChangedListener(new TextWatcher() {
