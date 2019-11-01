@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.DragEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -82,12 +83,16 @@ public class MainActivity2 extends Activity {
         ListElementsArrayList = new ArrayList<MusicItem>();
         //oldadapter = new MusicItemAdapter(this, ListElementsArrayList , seekbar);
         seekbar = (SeekBar) findViewById(R.id.seekbar_audio);
+
+        seekbar.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                return false;
+            }
+        });
         adapter = new MyFilterAdapter(this, ListElementsArrayList, seekbar);
 
         ListMusicFiles();
-
-
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
